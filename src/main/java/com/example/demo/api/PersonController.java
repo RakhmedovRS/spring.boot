@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author RakhmedovRS
@@ -25,7 +27,7 @@ public class PersonController
 	}
 
 	@PostMapping
-	public void addPerson(@RequestBody Person person)
+	public void addPerson(@Valid @NotNull @RequestBody Person person)
 	{
 		personService.addPerson(person);
 	}
@@ -40,5 +42,18 @@ public class PersonController
 	public Person getPersonById(@PathVariable("id") UUID id)
 	{
 		return personService.getPersonById(id).orElse(null);
+	}
+
+	@DeleteMapping(path = "{id}")
+	public void deletePersonById(@PathVariable("id") UUID id)
+	{
+		personService.deletePersonById(id);
+	}
+
+	@PutMapping(path = "{id}")
+	public void updatePersonById(@PathVariable("id") UUID id,
+	                             @Valid @NotNull @RequestBody Person person)
+	{
+		personService.updatePersonById(id, person);
 	}
 }
